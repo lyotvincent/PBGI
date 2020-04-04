@@ -23,6 +23,7 @@ biopython
 bcbio  
 
 ## Databases
+Bacterial data can be downloaded from the database below.  
 
 NCBI Genbank  
 Drugbank  
