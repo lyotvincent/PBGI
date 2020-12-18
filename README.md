@@ -55,7 +55,9 @@ help:
 
 ```pbgi_configuration.xlsx``` in the ```Help``` is the configuration file of PBGI.  
 Users could customize parameters in this configuration file.  
-![avatar][conf]
+
+![avatar][conf]  
+
 The picture is a screenshot of part of the configuration file.  
 The green box contains the parameter name. Users could enter parameters in the red box to customize the software.  
 In order to control the choice of software, users could set True or False for the "enable" of software.
