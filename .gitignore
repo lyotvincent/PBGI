@@ -1,3 +1,5 @@
 conf.json
 pbgi_configuration.xlsx
+build.sh
+meta.yaml
 scripts/snap.py
