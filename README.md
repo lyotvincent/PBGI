@@ -70,7 +70,7 @@ In order to control the choice of software, users could set True or False for th
 ## Bioconda support
 
 We are working for this.
-
+<!-- 
 ## 主要测试菌种
 肠杆菌属Enterobacteriaceae  
 链球菌属Streptococcus spp.  
@@ -81,4 +81,4 @@ We are working for this.
 梭菌属Clostridium spp.  
 肠球菌属Enterococcus spp.  
 双歧杆菌属Bifidobacterium spp.  
-真杆菌属Eubacterium spp.  
+真杆菌属Eubacterium spp.   -->
