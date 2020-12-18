@@ -51,16 +51,16 @@ help:
 -conf_file_path configuration file for PBGI pipeline which is in xlsx format  
 -h or -help or --h or --help look help  
 
-## Configuration cile
+## Configuration file
 
 ## 主要测试菌种
-肠杆菌属Enterobacteriaceae
-链球菌属Streptococcus spp.
-乳杆菌属Lactobacillus spp.
-幽门螺杆菌属Helicobacterpylori spp.
-白色念珠菌属Candida albicans spp.
-拟杆菌属Bacteroides spp.
-梭菌属Clostridium spp.
-肠球菌属Enterococcus spp.
-双歧杆菌属Bifidobacterium spp.
-真杆菌属Eubacterium spp.
+肠杆菌属Enterobacteriaceae  
+链球菌属Streptococcus spp.  
+乳杆菌属Lactobacillus spp.  
+幽门螺杆菌属Helicobacterpylori spp.  
+白色念珠菌属Candida albicans spp.  
+拟杆菌属Bacteroides spp.  
+梭菌属Clostridium spp.  
+肠球菌属Enterococcus spp.  
+双歧杆菌属Bifidobacterium spp.  
+真杆菌属Eubacterium spp.  
