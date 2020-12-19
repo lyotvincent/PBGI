@@ -11,7 +11,7 @@ import scripts.handle_blast_xml_result
 import scripts.handle_denovo_blast_result
 import scripts.download_nucleotide
 import scripts.download_gb
-import scripts.snap
+# import scripts.snap
 import scripts.genbank2gff3
 import scripts.annotation_generator
 

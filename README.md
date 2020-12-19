@@ -25,6 +25,10 @@ The ✔ in 'conda' column means that the software cound install by conda.
 |minimap2|✔|<https://github.com/lh3/minimap2>|
 |biopython|✔|pip
 |bcbio-gff|✔|pip
+|xlrd|✔|pip
+|pyyaml|✔|pip
+
+```pip install datasketch``` need to be installed by the user.  
 
 ## Databases
 Bacterial data can be downloaded from the database below.  
