@@ -3,3 +3,4 @@ pbgi_configuration.xlsx
 build.sh
 meta.yaml
 scripts/snap.py
+pbgi_pipeline*.tar.gz
