@@ -22,7 +22,6 @@ The ✔ in 'conda' column means that the software cound install by conda.
 |snap-aligner|✔|<https://github.com/amplab/snap>|
 |bowtie2|✔|<https://github.com/BenLangmead/bowtie2>|
 |samtools|✔|<https://github.com/samtools/samtools>|
-|bedtools|✔|<https://github.com/arq5x/bedtools2>|
 |minimap2|✔|<https://github.com/lh3/minimap2>|
 |biopython|✔|pip
 |bcbio-gff|✔|pip
