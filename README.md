@@ -2,6 +2,20 @@
 
 PBGI is an effective approach and automatic bioinformatics pipeline for bacterial genome identification, performing automatedly and customized bioinformatics analysis using short-reads or long-reads sequencing data produced by multiple platforms such as Illumina, PacBio and Oxford Nanopore.  
 
+## Install
+
+### From github
+
+1.```git clone https://github.com/lyotvincent/PBGI.git```  
+2.run ```python download_bacteria_data``` to build bacteria local database.  
+3.Install external tools  
+```conda install -y fastqc fastp trimmomatic cutadapt megahit spades velvet quast blast prokka prodigal snap-aligner bowtie2 samtools minimap2 biopython bcbio-gff xlrd pyyaml```  
+```pip install datasketch```  
+
+### From conda
+
+We are working for this.  (```conda install pbgi_pipeline -c bioconda```)
+
 ## External tools
 These software/tools respectively support part of the entire pipeline. If you want to use all the functions of the pipeline, all these software in the table should be installed.
 The ✔ in 'conda' column means that the software cound install by conda.
@@ -70,9 +84,7 @@ The picture is a screenshot of part of the configuration file.
 The green box contains the parameter name. Users could enter parameters in the red box to customize the software.  
 In order to control the choice of software, users could set True or False for the "enable" of software.
 
-## Bioconda support
 
-We are working for this.
 <!-- 
 ## 主要测试菌种
 肠杆菌属Enterobacteriaceae  
