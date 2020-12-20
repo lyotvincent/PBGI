@@ -56,7 +56,7 @@ class Resequencing:
                 assembly_result = self.result_dir+'/resequencing/assembly/megahit_out/final.contigs.fa'
             print('end assembly')
             print("Begin QUAST")
-            subprocess.run(os.path.dirname(os.path.realpath(__file__))+'/external_tools/quast-5.0.2/quast.py '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/resequencing/quast_out', shell=True, check=True)
+            subprocess.run('quast '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/resequencing/quast_out', shell=True, check=True)
             print("End QUAST")
         else:
             print('begin assembly')
@@ -76,7 +76,7 @@ class Resequencing:
                 assembly_result = self.result_dir+'/resequencing/assembly/megahit_out/final.contigs.fa'
             print('end assembly')
             print("Begin QUAST")
-            subprocess.run(os.path.dirname(os.path.realpath(__file__))+'/external_tools/quast-5.0.2/quast.py '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/resequencing/quast_out', shell=True, check=True)
+            subprocess.run('quast '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/resequencing/quast_out', shell=True, check=True)
             print("End QUAST")
         blast_input = assembly_result
         # else:
@@ -110,7 +110,7 @@ class Resequencing:
         # print(stdout)
         # print(stderr)
 
-        blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s""" % (os.path.dirname(os.path.realpath(__file__))+'/external_tools/blastn', assembly_result, blastn_conf["blast_db_path"], blastn_conf['num_threads'], blastn_conf['num_alignments'], blastn_conf['evalue'])
+        blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', assembly_result, blastn_conf["blast_db_path"], blastn_conf['num_threads'], blastn_conf['num_alignments'], blastn_conf['evalue'])
         if blastn_conf['penalty'] != None:
             blastn_line += 'penalty %s' % blastn_conf['penalty']
         if blastn_conf['reward'] != None:
@@ -167,7 +167,7 @@ class Resequencing:
         if alignment_tool == 'bowtie2':
             subprocess.run('bowtie2-build '+self.result_dir+'/resequencing/'+closest_accession_version+'.fasta '+self.result_dir+'/resequencing/'+closest_accession_version+'_bowtie2_index', shell=True, check=True)
         else:
-            subprocess.run(os.path.dirname(os.path.realpath(__file__))+'/external_tools/snap-aligner index '+self.result_dir+'/resequencing/'+closest_accession_version+'.fasta '+self.result_dir+'/resequencing/'+closest_accession_version+'_index', shell=True, check=True)
+            subprocess.run('snap-aligner index '+self.result_dir+'/resequencing/'+closest_accession_version+'.fasta '+self.result_dir+'/resequencing/'+closest_accession_version+'_index', shell=True, check=True)
         if self.input_file_paired == None:
             assembly_conf = self.conf['resequencing']['assembly']
             if assembly_conf['enable']:
@@ -176,12 +176,12 @@ class Resequencing:
                 else:
                     scripts.fasta2fastq.fasta_to_fastq(assembly_result, self.result_dir)
                     assembly_result = self.result_dir+"/resequencing/assembly_result.fastq"
-                    subprocess.run(os.path.dirname(os.path.realpath(__file__))+'/external_tools/snap-aligner single '+self.result_dir+'/resequencing/'+closest_accession_version+'_index '+assembly_result+' -o '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
+                    subprocess.run('snap-aligner single '+self.result_dir+'/resequencing/'+closest_accession_version+'_index '+assembly_result+' -o '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
             else:
                 if alignment_tool == 'bowtie2':
                     subprocess.run('bowtie2 -x '+self.result_dir+'/resequencing/'+closest_accession_version+'_bowtie2_index -U '+self.input_file+' -S '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
                 else:
-                    subprocess.run(os.path.dirname(os.path.realpath(__file__))+'/external_tools/snap-aligner single '+self.result_dir+'/resequencing/'+closest_accession_version+'_index '+self.input_file+' -o '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
+                    subprocess.run('snap-aligner single '+self.result_dir+'/resequencing/'+closest_accession_version+'_index '+self.input_file+' -o '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
             # subprocess.run('bowtie2 -x '+self.result_dir+'/resequencing/'+closest_accession_version+'_bowtie2_index -U '+self.input_file+' -S '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
         else:
             assembly_conf = self.conf['resequencing']['assembly']
@@ -191,17 +191,17 @@ class Resequencing:
                 else:
                     scripts.fasta2fastq.fasta_to_fastq(assembly_result, self.result_dir)
                     assembly_result = self.result_dir+"/resequencing/assembly_result.fastq"
-                    subprocess.run(os.path.dirname(os.path.realpath(__file__))+'/external_tools/snap-aligner single '+self.result_dir+'/resequencing/'+closest_accession_version+'_index '+assembly_result+' -o '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
+                    subprocess.run('snap-aligner single '+self.result_dir+'/resequencing/'+closest_accession_version+'_index '+assembly_result+' -o '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
             else:
                 if alignment_tool == 'bowtie2':
                     subprocess.run('bowtie2 -x '+self.result_dir+'/resequencing/'+closest_accession_version+'_bowtie2_index -1 '+self.input_file+' -2 '+self.input_file_paired+' -S '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
                 else:
-                    subprocess.run(os.path.dirname(os.path.realpath(__file__))+'/external_tools/snap-aligner paired '+self.result_dir+'/resequencing/'+closest_accession_version+'_index '+self.input_file+' '+self.input_file_paired+' -o '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
+                    subprocess.run('snap-aligner paired '+self.result_dir+'/resequencing/'+closest_accession_version+'_index '+self.input_file+' '+self.input_file_paired+' -o '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
             # subprocess.run('bowtie2 -x '+self.result_dir+'/resequencing/'+closest_accession_version+'_bowtie2_index -1 '+self.input_file+' -2 '+self.input_file_paired+' -S '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
 
         print("begin sort_sam")
-        subprocess.run(os.path.dirname(os.path.realpath(__file__))+'/external_tools/samtools-1.10/samtools view -bS '+self.result_dir+'/resequencing/alignment_result.sam > '+self.result_dir+'/resequencing/output.bam', shell=True, check=True)
-        subprocess.run(os.path.dirname(os.path.realpath(__file__))+'/external_tools/samtools-1.10/samtools sort '+self.result_dir+'/resequencing/output.bam -o '+self.result_dir+'/resequencing/alignment_result.sorted.sam -O sam', shell=True, check=True)
+        subprocess.run('samtools view -bS '+self.result_dir+'/resequencing/alignment_result.sam > '+self.result_dir+'/resequencing/output.bam', shell=True, check=True)
+        subprocess.run('samtools sort '+self.result_dir+'/resequencing/output.bam -o '+self.result_dir+'/resequencing/alignment_result.sorted.sam -O sam', shell=True, check=True)
         print("end sort_sam")
 
         scripts.download_gb.download_by_accession_version(self.result_dir, closest_accession_version)
@@ -259,7 +259,7 @@ class Resequencing:
         # print(stdout)
         # print(stderr)
 
-        blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s""" % (os.path.dirname(os.path.realpath(__file__))+'/external_tools/blastn', assembly_result, self.conf["resequencing"]['blastn']["blast_db_path"], blastn_conf['num_threads'], blastn_conf['num_alignments'], blastn_conf['evalue'])
+        blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', assembly_result, self.conf["resequencing"]['blastn']["blast_db_path"], blastn_conf['num_threads'], blastn_conf['num_alignments'], blastn_conf['evalue'])
         if blastn_conf['penalty'] != None:
             blastn_line += 'penalty %s' % blastn_conf['penalty']
         if blastn_conf['reward'] != None:
@@ -332,7 +332,7 @@ class Resequencing:
 
         # minimap2
         minimap2_conf = self.conf['resequencing']['minimap2']
-        command_line = os.path.dirname(os.path.realpath(__file__))+'/external_tools/minimap2/minimap2 -a '
+        command_line = 'minimap2 -a '
         if minimap2_conf['-H'] != None:
             command_line += "-H "
         if minimap2_conf['-k'] != None:
@@ -410,7 +410,7 @@ class Resequencing:
         print("begin sort_sam")
         # subprocess.run('samtools view -bS '+self.result_dir+'/resequencing/minimap2_result.sam > '+self.result_dir+'/resequencing/output.bam', shell=True, check=True)
         # subprocess.run('samtools sort '+self.result_dir+'/resequencing/output.bam -o '+self.result_dir+'/resequencing/minimap2_result.sorted.sam -O sam', shell=True, check=True)
-        subprocess.run(os.path.dirname(os.path.realpath(__file__))+'/external_tools/samtools-1.10/samtools sort '+self.result_dir+'/resequencing/minimap2_'+closest_accession_version+'_result.sam -o '+self.result_dir+'/resequencing/minimap2_'+closest_accession_version+'_result.sorted.sam -O sam', shell=True, check=True)
+        subprocess.run('samtools sort '+self.result_dir+'/resequencing/minimap2_'+closest_accession_version+'_result.sam -o '+self.result_dir+'/resequencing/minimap2_'+closest_accession_version+'_result.sorted.sam -O sam', shell=True, check=True)
         print("end sort_sam")
         
         scripts.download_gb.download_by_accession_version(self.result_dir, closest_accession_version)
@@ -437,7 +437,7 @@ class Resequencing:
             print('begin blast patric_amr_db')
             patric_blastn_conf = self.conf['resequencing']['patric_blastn']
 
-            blastn_line = """%s -query %s -db %s -outfmt 5 -num_threads %s -num_alignments %s -evalue %s""" % (os.path.dirname(os.path.realpath(__file__))+'/external_tools/blastn', assembly_result, patric_blastn_conf["blast_db_path"], patric_blastn_conf['num_threads'], patric_blastn_conf['num_alignments'], patric_blastn_conf['evalue'])
+            blastn_line = """%s -query %s -db %s -outfmt 5 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', assembly_result, patric_blastn_conf["blast_db_path"], patric_blastn_conf['num_threads'], patric_blastn_conf['num_alignments'], patric_blastn_conf['evalue'])
             if patric_blastn_conf['penalty'] != None:
                 blastn_line += 'penalty %s' % patric_blastn_conf['penalty']
             if patric_blastn_conf['reward'] != None:
@@ -465,7 +465,7 @@ class Resequencing:
             print('begin card_blastn')
             card_blastn_conf = self.conf['resequencing']['card_blastn']
 
-            blastn_line = """%s -query %s -db %s -outfmt 5 -num_threads %s -num_alignments %s -evalue %s""" % (os.path.dirname(os.path.realpath(__file__))+'/external_tools/blastn', assembly_result, card_blastn_conf["blast_db_path"], card_blastn_conf['num_threads'], card_blastn_conf['num_alignments'], card_blastn_conf['evalue'])
+            blastn_line = """%s -query %s -db %s -outfmt 5 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', assembly_result, card_blastn_conf["blast_db_path"], card_blastn_conf['num_threads'], card_blastn_conf['num_alignments'], card_blastn_conf['evalue'])
             if card_blastn_conf['penalty'] != None:
                 blastn_line += 'penalty %s' % card_blastn_conf['penalty']
             if card_blastn_conf['reward'] != None:
@@ -493,7 +493,7 @@ class Resequencing:
             print('begin drugbank_db')
             drugbank_blastn_conf = self.conf['resequencing']['card_blastn']
 
-            blastn_line = """%s -query %s -db %s -outfmt 5 -num_threads %s -num_alignments %s -evalue %s""" % (os.path.dirname(os.path.realpath(__file__))+'/external_tools/blastn', assembly_result, drugbank_blastn_conf["blast_db_path"], drugbank_blastn_conf['num_threads'], drugbank_blastn_conf['num_alignments'], drugbank_blastn_conf['evalue'])
+            blastn_line = """%s -query %s -db %s -outfmt 5 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', assembly_result, drugbank_blastn_conf["blast_db_path"], drugbank_blastn_conf['num_threads'], drugbank_blastn_conf['num_alignments'], drugbank_blastn_conf['evalue'])
             if drugbank_blastn_conf['penalty'] != None:
                 blastn_line += 'penalty %s' % drugbank_blastn_conf['penalty']
             if drugbank_blastn_conf['reward'] != None:

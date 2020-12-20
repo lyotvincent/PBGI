@@ -54,7 +54,7 @@ class Denovo:
         temp_file.close()
 
         print("Begin QUAST")
-        subprocess.run(os.path.dirname(os.path.realpath(__file__))+'/external_tools/quast-5.0.2/quast.py '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/denovo/quast_out', shell=True, check=True)
+        subprocess.run('quast '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/denovo/quast_out', shell=True, check=True)
         print("End QUAST")
 
         self.blastn_and_annotation(assembly_result)
@@ -82,7 +82,7 @@ class Denovo:
         print('end assembly')
 
         print("Begin QUAST")
-        subprocess.run(os.path.dirname(os.path.realpath(__file__))+'/external_tools/quast-5.0.2/quast.py '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/denovo/quast_out', shell=True, check=True)
+        subprocess.run('quast '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/denovo/quast_out', shell=True, check=True)
         print("End QUAST")
 
         self.blastn_and_annotation(assembly_result)
@@ -108,7 +108,7 @@ class Denovo:
             assembly_result = self.result_dir+'/denovo/assembly/megahit_out/final.contigs.fa'
 
         print("Begin QUAST")
-        subprocess.run(os.path.dirname(os.path.realpath(__file__))+'/external_tools/quast-5.0.2/quast.py '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/denovo/quast_out', shell=True, check=True)
+        subprocess.run('quast '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/denovo/quast_out', shell=True, check=True)
         print("End QUAST")
 
         self.blastn_and_annotation(assembly_result)
@@ -133,7 +133,7 @@ class Denovo:
                 assembly_result = self.result_dir+'/denovo/assembly/canu_output/canu_assembly_result.contigs.fasta'
 
             print("Begin QUAST")
-            subprocess.run(os.path.dirname(os.path.realpath(__file__))+'/external_tools/quast-5.0.2/quast.py '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/denovo/quast_out', shell=True, check=True)
+            subprocess.run('quast '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/denovo/quast_out', shell=True, check=True)
             print("End QUAST")
         else:
             scripts.fastq2fasta.fastq2fasta(self.input_file, self.result_dir+"/denovo")
@@ -147,7 +147,7 @@ class Denovo:
         if self.conf['denovo']['ncbi_bacteria_blastn']['enable']:
             print('begin blast ncbi_bacteria_db')
             blastn_conf = self.conf['denovo']['ncbi_bacteria_blastn']
-            blastn_cline = NcbiblastnCommandline(cmd=os.path.dirname(os.path.realpath(__file__))+'/external_tools/blastn', query=assembly_result, db=self.conf["denovo"]["ncbi_bacteria_blastn"]["blast_db_path"], outfmt=5, out=self.result_dir+"/denovo/ncbi_bacteria_blast_out.xml")
+            blastn_cline = NcbiblastnCommandline(cmd='blastn', query=assembly_result, db=self.conf["denovo"]["ncbi_bacteria_blastn"]["blast_db_path"], outfmt=5, out=self.result_dir+"/denovo/ncbi_bacteria_blast_out.xml")
             blastn_cline.set_parameter('num_threads', int(blastn_conf['num_threads']))
             blastn_cline.set_parameter('num_alignments', int(blastn_conf['num_alignments']))
             if blastn_conf['evalue'] != None:
@@ -177,7 +177,7 @@ class Denovo:
         if self.conf['denovo']['patric_blastn']['enable']:
             print('begin blast patric_amr_db')
             patric_blastn_conf = self.conf['denovo']['patric_blastn']
-            blastn_cline = NcbiblastnCommandline(cmd=os.path.dirname(os.path.realpath(__file__))+'/external_tools/blastn', query=assembly_result, db=self.conf["denovo"]["patric_blastn"]["patric_db_path"], outfmt=5, out=self.result_dir+"/denovo/patric_amr_blast_out.xml")
+            blastn_cline = NcbiblastnCommandline(cmd='blastn', query=assembly_result, db=self.conf["denovo"]["patric_blastn"]["patric_db_path"], outfmt=5, out=self.result_dir+"/denovo/patric_amr_blast_out.xml")
             blastn_cline.set_parameter('num_threads', int(patric_blastn_conf['num_threads']))
             blastn_cline.set_parameter('num_alignments', int(patric_blastn_conf['num_alignments']))
             if patric_blastn_conf['evalue'] != None:
@@ -207,7 +207,7 @@ class Denovo:
             # blast card_prevalence_db
             print('begin card_blastn')
             card_blastn_conf = self.conf['denovo']['card_blastn']
-            blastn_cline = NcbiblastnCommandline(cmd=os.path.dirname(os.path.realpath(__file__))+'/external_tools/blastn', query=assembly_result, db=self.conf["denovo"]["card_blastn"]["card_db_path"], outfmt=5, out=self.result_dir+"/denovo/card_prevalence_blast_out.xml")
+            blastn_cline = NcbiblastnCommandline(cmd='blastn', query=assembly_result, db=self.conf["denovo"]["card_blastn"]["card_db_path"], outfmt=5, out=self.result_dir+"/denovo/card_prevalence_blast_out.xml")
             blastn_cline.set_parameter('num_threads', int(card_blastn_conf['num_threads']))
             blastn_cline.set_parameter('num_alignments', int(card_blastn_conf['num_alignments']))
             if card_blastn_conf['evalue'] != None:
@@ -236,7 +236,7 @@ class Denovo:
             # blast drugbank_db
             print('begin drugbank_db')
             drugbank_blastn_conf = self.conf['denovo']['card_blastn']
-            blastn_cline = NcbiblastnCommandline(cmd=os.path.dirname(os.path.realpath(__file__))+'/external_tools/blastn', query=assembly_result, db=self.conf["denovo"]["drugbank_blastn"]["drugbank_db_path"], outfmt=5, out=self.result_dir+"/denovo/drugbank_blast_out.xml")
+            blastn_cline = NcbiblastnCommandline(cmd='blastn', query=assembly_result, db=self.conf["denovo"]["drugbank_blastn"]["drugbank_db_path"], outfmt=5, out=self.result_dir+"/denovo/drugbank_blast_out.xml")
             blastn_cline.set_parameter('num_threads', int(drugbank_blastn_conf['num_threads']))
             blastn_cline.set_parameter('num_alignments', int(drugbank_blastn_conf['num_alignments']))
             if drugbank_blastn_conf['evalue'] != None:

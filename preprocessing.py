@@ -19,7 +19,7 @@ class Preprocessing:
     def fastqc_single_end(self, folder_name):
         print("begin fastqc single end")
         fastqc_conf = self.conf['preprocessing']['fastqc']
-        com = os.path.dirname(os.path.realpath(__file__))+'/external_tools/FastQC/fastqc -o '+self.result_dir+'/preprocessing/'+folder_name+' '
+        com = 'fastqc -o '+self.result_dir+'/preprocessing/'+folder_name+' '
         if fastqc_conf['--casava'] != None:
             com += "--casava "
         if fastqc_conf['--nofilter'] != None:
@@ -48,7 +48,7 @@ class Preprocessing:
     def fastqc_paired_end(self, folder_name):
         print("begin fastqc paired end")
         fastqc_conf = self.conf['preprocessing']['fastqc']
-        com = os.path.dirname(os.path.realpath(__file__))+'/external_tools/FastQC/fastqc -o '+self.result_dir+'/preprocessing/'+folder_name+' '
+        com = 'fastqc -o '+self.result_dir+'/preprocessing/'+folder_name+' '
         if fastqc_conf['--casava'] != None:
             com += "--casava "
         if fastqc_conf['--nofilter'] != None:
@@ -75,7 +75,7 @@ class Preprocessing:
     def fastp_single_end(self):
         print("begin fastp_single_end")
         fastp_conf = self.conf['preprocessing']['fastp']
-        com = os.path.dirname(os.path.realpath(__file__))+'/external_tools/fastp -i '+self.input_file+' -o '+self.result_dir+'/preprocessing/fastp_output.fastq -j '+self.result_dir+'/preprocessing/fastp.json -h '+self.result_dir+'/preprocessing/fastp.html '
+        com = 'fastp -i '+self.input_file+' -o '+self.result_dir+'/preprocessing/fastp_output.fastq -j '+self.result_dir+'/preprocessing/fastp.json -h '+self.result_dir+'/preprocessing/fastp.html '
         if fastp_conf['--phred64'] != None:
             com += '--phred64 '
         if fastp_conf['-V'] != None:
@@ -190,7 +190,7 @@ class Preprocessing:
     def fastp_paired_end(self):
         print("begin fastp_paired_end")
         fastp_conf = self.conf['preprocessing']['fastp']
-        com = os.path.dirname(os.path.realpath(__file__))+'/external_tools/fastp --in1 '+self.input_file_1+" --in2 "+self.input_file_2+' --out1 '+self.result_dir+'/preprocessing/fastp_output_1.fastq --out2 '+self.result_dir+'/preprocessing/fastp_output_2.fastq -j '+self.result_dir+'/preprocessing/fastp.json -h '+self.result_dir+'/preprocessing/fastp.html '
+        com = 'fastp --in1 '+self.input_file_1+" --in2 "+self.input_file_2+' --out1 '+self.result_dir+'/preprocessing/fastp_output_1.fastq --out2 '+self.result_dir+'/preprocessing/fastp_output_2.fastq -j '+self.result_dir+'/preprocessing/fastp.json -h '+self.result_dir+'/preprocessing/fastp.html '
         if fastp_conf['--phred64'] != None:
             com += '--phred64 '
         if fastp_conf['-V'] != None:
@@ -305,7 +305,7 @@ class Preprocessing:
     def trimmomatic_single_end(self):
         print("begin trimmomatic_single_end")
         trimmomatic_conf = self.conf['preprocessing']['trimmomatic']
-        com = 'java -jar %s/external_tools/trimmomatic-0.39.jar SE ' % os.path.dirname(os.path.realpath(__file__))
+        com = 'trimmomatic SE '
         # com = 'trimmomatic SE '
         if trimmomatic_conf['-threads'] != None:
             com += "-threads "+str(trimmomatic_conf['-threads'])+' '
@@ -340,7 +340,7 @@ class Preprocessing:
     def trimmomatic_paired_end(self):
         print("begin trimmomatic_paired_end")
         trimmomatic_conf = self.conf['preprocessing']['trimmomatic']
-        com = 'java -jar %s/external_tools/trimmomatic-0.39.jar PE ' % os.path.dirname(os.path.realpath(__file__))
+        com = 'trimmomatic PE '
         # com = 'trimmomatic PE '
         if trimmomatic_conf['-threads'] != None:
             com += "-threads "+str(trimmomatic_conf['-threads'])+' '

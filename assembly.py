@@ -21,7 +21,7 @@ class Assembly:
     def megahit_single(self):
         print("begin megahit_single_end")
         megahit_conf = self.conf['megahit']
-        command_line = '%s/external_tools/MEGAHIT/megahit ' % os.path.dirname(os.path.realpath(__file__))
+        command_line = 'megahit '
         if megahit_conf['--min-count'] != None:
             command_line += '--min-count '+str(megahit_conf['--min-count'])+' '
         if megahit_conf['--k-list'] != None:
@@ -61,7 +61,7 @@ class Assembly:
     def megahit_paired(self):
         print("begin megahit_paired_end")
         megahit_conf = self.conf['megahit']
-        command_line = '%s/external_tools/MEGAHIT/megahit ' % os.path.dirname(os.path.realpath(__file__))
+        command_line = 'megahit '
         if megahit_conf['--min-count'] != None:
             command_line += '--min-count '+str(megahit_conf['--min-count'])+' '
         if megahit_conf['--k-list'] != None:
@@ -141,7 +141,7 @@ class Assembly:
     def spades_single(self):
         print("begin spades_single_end")
         spades_conf = self.conf['spades']
-        command_line = os.path.dirname(os.path.realpath(__file__))+'/external_tools/SPAdes/bin/spades.py -s '+self.input_file+' '
+        command_line = 'spades.py -s '+self.input_file+' '
         if spades_conf['--iontorrent'] != None:
             command_line += '--iontorrent '
         if spades_conf['-t'] != None:
@@ -161,7 +161,7 @@ class Assembly:
     def spades_paired(self):
         print("begin spades_paired_end")
         spades_conf = self.conf['spades']
-        command_line = os.path.dirname(os.path.realpath(__file__))+'/external_tools/SPAdes/bin/spades.py -1 '+self.input_file_1+' -2 '+self.input_file_2+' '
+        command_line = 'spades.py -1 '+self.input_file_1+' -2 '+self.input_file_2+' '
         if spades_conf['--iontorrent'] != None:
             command_line += '--iontorrent '
         if spades_conf['-t'] != None:
@@ -202,12 +202,12 @@ class Assembly:
         print("begin spades_single_end")
         spades_conf = self.conf['spades']
         if spades_conf['--pacbio'] != None:
-            command_line = os.path.dirname(os.path.realpath(__file__))+'/external_tools/SPAdes/bin/spades.py --pacbio '+self.input_file+' '
+            command_line = 'spades.py --pacbio '+self.input_file+' '
         elif spades_conf['--nanopore'] != None:
-            command_line = os.path.dirname(os.path.realpath(__file__))+'/external_tools/SPAdes/bin/spades.py --nanopore '+self.input_file+' '
+            command_line = 'spades.py --nanopore '+self.input_file+' '
         else:
             print('please choose pacbio or nanopore in conf.json. use pacbio by default.')
-            command_line = os.path.dirname(os.path.realpath(__file__))+'/external_tools/SPAdes/bin/spades.py --pacbio '+self.input_file+' '
+            command_line = 'spades.py --pacbio '+self.input_file+' '
         if spades_conf['-t'] != None:
             command_line += '-t '+str(spades_conf['-t'])+' '
         if spades_conf['-m'] != None:
@@ -225,7 +225,7 @@ class Assembly:
     def velvet_single(self):
         print('begin velvet_single_end')
         velveth_conf = self.conf['velvet']['velveth']
-        command_line = os.path.dirname(os.path.realpath(__file__))+'/external_tools/velveth '+self.result_dir+'/velvet_output/ '
+        command_line = 'velveth '+self.result_dir+'/velvet_output/ '
         if velveth_conf['hash_length'] != None:
             command_line += str(velveth_conf['hash_length'])+' -fastq '
         else:
@@ -242,7 +242,7 @@ class Assembly:
         subprocess.run(command_line, shell=True, check=True)
         
         velvetg_conf = self.conf['velvet']['velvetg']
-        command_line = os.path.dirname(os.path.realpath(__file__))+'/external_tools/velvetg '+self.result_dir+'/velvet_output/ '
+        command_line = 'velvetg '+self.result_dir+'/velvet_output/ '
         if velvetg_conf['-cov_cutoff'] != None:
             command_line += '-cov_cutoff '+str(velvetg_conf['-cov_cutoff'])+' '
         if velvetg_conf['-ins_length'] != None:
@@ -297,7 +297,7 @@ class Assembly:
     def velvet_paired(self):
         print('begin velvet_paired_end')
         velveth_conf = self.conf['velvet']['velveth']
-        command_line = os.path.dirname(os.path.realpath(__file__))+'/external_tools/velveth '+self.result_dir+'/velvet_output/ '
+        command_line = 'velveth '+self.result_dir+'/velvet_output/ '
         if velveth_conf['hash_length'] != None:
             command_line += str(velveth_conf['hash_length'])+' -fastq '
         else:
@@ -315,7 +315,7 @@ class Assembly:
         subprocess.run(command_line, shell=True, check=True)
         
         velvetg_conf = self.conf['velvet']['velvetg']
-        command_line = os.path.dirname(os.path.realpath(__file__))+'/external_tools/velvetg '+self.result_dir+'/velvet_output/ '
+        command_line = 'velvetg '+self.result_dir+'/velvet_output/ '
         if velvetg_conf['-cov_cutoff'] != None:
             command_line += '-cov_cutoff '+str(velvetg_conf['-cov_cutoff'])+' '
         if velvetg_conf['-ins_length'] != None:
@@ -370,7 +370,7 @@ class Assembly:
     def velvet_interleaved(self):
         print('begin velvet_interleaved')
         velveth_conf = self.conf['velvet']['velveth']
-        command_line = os.path.dirname(os.path.realpath(__file__))+'/external_tools/velveth '+self.result_dir+'/velvet_output/ '
+        command_line = 'velveth '+self.result_dir+'/velvet_output/ '
         if velveth_conf['hash_length'] != None:
             command_line += str(velveth_conf['hash_length'])+' -fastq '
         else:
@@ -388,7 +388,7 @@ class Assembly:
         subprocess.run(command_line, shell=True, check=True)
 
         velvetg_conf = self.conf['velvet']['velvetg']
-        command_line = os.path.dirname(os.path.realpath(__file__))+'/external_tools/velvetg '+self.result_dir+'/velvet_output/ '
+        command_line = 'velvetg '+self.result_dir+'/velvet_output/ '
         if velvetg_conf['-cov_cutoff'] != None:
             command_line += '-cov_cutoff '+str(velvetg_conf['-cov_cutoff'])+' '
         if velvetg_conf['-ins_length'] != None:
@@ -443,7 +443,7 @@ class Assembly:
     def canu(self):
         print('begin canu')
         canu_conf = self.conf['canu']
-        command_line = os.path.dirname(os.path.realpath(__file__))+'/external_tools/canu-2.0/bin/canu -p canu_assembly_result -d '+self.result_dir+'/canu_output/ '
+        command_line = 'canu -p canu_assembly_result -d '+self.result_dir+'/canu_output/ '
         if canu_conf['genomeSize='] != None:
             command_line += 'genomeSize='+str(canu_conf['genomeSize='])+' '
         else:
