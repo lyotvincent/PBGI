@@ -34,7 +34,7 @@ def main():
 
     if len(argv) == 1 or "-h" in argv or "-help" in argv or "--h" in argv or "--help" in argv:
         print_help()
-        exit()
+        exit(0)
 
     # input file
     if "-f" in argv and not "-1" in argv and not "-2" in argv and not "-12" in argv:
