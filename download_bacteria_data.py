@@ -1,4 +1,4 @@
-import subprocess
+import subprocess, time, random
 
 class Downloader:
 
@@ -24,6 +24,7 @@ class Downloader:
             fna_ftp_path = ftp_path + '/' + ftp_path.split('/')[-1] + '_genomic.fna.gz'
             fna_ftp_path.replace("ftp://", "https://")
             try:
+                time.sleep(random.randint(1, 3))
                 subprocess.run('wget -c -T 10 --tries=0 --retry-connrefused %s' % fna_ftp_path, shell=True, check=True)
             except:
                 fil = open('undownloadedseq.txt', 'a+')
