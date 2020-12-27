@@ -255,6 +255,8 @@ class ConfigurationReader:
         # if resequencing_sheet.cell_value(3, 1) != "":
         #     self.conf["resequencing"]["blast_db_path"] = resequencing_sheet.cell_value(3, 1)
 
+        if resequencing_sheet.cell_value(3, 1) != True:
+            self.conf["resequencing"]["assembly"]["enable"] = False
         if resequencing_sheet.cell_value(5, 1) != True:
             self.conf["resequencing"]["assembly"]["megahit"]["enable"] = False
         if resequencing_sheet.cell_value(6, 1) != "":

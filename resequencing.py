@@ -36,91 +36,104 @@ class Resequencing:
         print('input_file='+str(self.input_file))
         
         assembly_conf = self.conf['resequencing']['assembly']
-        # if assembly_conf['enable'] != 0:
-        if self.input_file_paired == None:
-            print('begin assembly')
-            os.mkdir(os.path.abspath('.')+'/'+self.result_dir+'/resequencing/assembly')
-            assembly_obj = assembly.Assembly(self.result_dir+'/resequencing/assembly', assembly_conf, input_file=self.input_file)
-            print(assembly_conf['megahit']['enable'], assembly_conf['spades']['enable'], assembly_conf['velvet']['enable'])
-            if assembly_conf['megahit']['enable']:
-                assembly_obj.megahit_single()
-                assembly_result = self.result_dir+'/resequencing/assembly/megahit_out/final.contigs.fa'
-            elif assembly_conf['spades']['enable']:
-                assembly_obj.spades_single()
-                assembly_result = self.result_dir+'/resequencing/assembly/spades_out/contigs.fasta'
-            elif assembly_conf['velvet']['enable']:
-                assembly_obj.velvet_single()
-                assembly_result = self.result_dir+'/resequencing/assembly/velvet_output/contigs.fa'
+        if assembly_conf['enable']:
+            if self.input_file_paired == None:
+                print('begin assembly')
+                os.mkdir(os.path.abspath('.')+'/'+self.result_dir+'/resequencing/assembly')
+                assembly_obj = assembly.Assembly(self.result_dir+'/resequencing/assembly', assembly_conf, input_file=self.input_file)
+                print(assembly_conf['megahit']['enable'], assembly_conf['spades']['enable'], assembly_conf['velvet']['enable'])
+                if assembly_conf['megahit']['enable']:
+                    assembly_obj.megahit_single()
+                    assembly_result = self.result_dir+'/resequencing/assembly/megahit_out/final.contigs.fa'
+                elif assembly_conf['spades']['enable']:
+                    assembly_obj.spades_single()
+                    assembly_result = self.result_dir+'/resequencing/assembly/spades_out/contigs.fasta'
+                elif assembly_conf['velvet']['enable']:
+                    assembly_obj.velvet_single()
+                    assembly_result = self.result_dir+'/resequencing/assembly/velvet_output/contigs.fa'
+                else:
+                    assembly_obj.megahit_single()
+                    assembly_result = self.result_dir+'/resequencing/assembly/megahit_out/final.contigs.fa'
+                print('end assembly')
+                print("Begin QUAST")
+                subprocess.run('quast '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/resequencing/quast_out', shell=True, check=True)
+                print("End QUAST")
             else:
-                assembly_obj.megahit_single()
-                assembly_result = self.result_dir+'/resequencing/assembly/megahit_out/final.contigs.fa'
-            print('end assembly')
-            print("Begin QUAST")
-            subprocess.run('quast '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/resequencing/quast_out', shell=True, check=True)
-            print("End QUAST")
+                print('begin assembly')
+                os.mkdir(os.path.abspath('.')+'/'+self.result_dir+'/resequencing/assembly')
+                assembly_obj = assembly.Assembly(self.result_dir+'/resequencing/assembly', assembly_conf, input_file_1=self.input_file, input_file_2=self.input_file_paired)
+                if assembly_conf['megahit']['enable']:
+                    assembly_obj.megahit_paired()
+                    assembly_result = self.result_dir+'/resequencing/assembly/megahit_out/final.contigs.fa'
+                elif assembly_conf['spades']['enable']:
+                    assembly_obj.spades_paired()
+                    assembly_result = self.result_dir+'/resequencing/assembly/spades_out/contigs.fasta'
+                elif assembly_conf['velvet']['enable']:
+                    assembly_obj.velvet_paired()
+                    assembly_result = self.result_dir+'/resequencing/assembly/velvet_output/contigs.fa'
+                else:
+                    assembly_obj.megahit_paired()
+                    assembly_result = self.result_dir+'/resequencing/assembly/megahit_out/final.contigs.fa'
+                print('end assembly')
+                print("Begin QUAST")
+                subprocess.run('quast '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/resequencing/quast_out', shell=True, check=True)
+                print("End QUAST")
+            blast_input = assembly_result
+            
+            temp_file = open(os.path.abspath('.') + '/' + self.result_dir+'/Summary_of_results.html', 'a+')
+            temp_file.write('<ul>\n')
+            temp_file.write('<li>assembly result is in %s</li>\n' % './resequencing/assembly')
+            temp_file.write('<li><a href="%s">click to assembly result</a></li>\n' % ('./resequencing/assembly'))
+            temp_file.write('<li>assembly qc result is in %s</li>\n' % './resequencing/quast_out')
+            temp_file.write('<li><a href="%s">click to assembly qc result</a></li>\n' % ('./resequencing/quast_out/report.html'))
+            temp_file.write('</ul>\n')
+            temp_file.close()
         else:
-            print('begin assembly')
-            os.mkdir(os.path.abspath('.')+'/'+self.result_dir+'/resequencing/assembly')
-            assembly_obj = assembly.Assembly(self.result_dir+'/resequencing/assembly', assembly_conf, input_file_1=self.input_file, input_file_2=self.input_file_paired)
-            if assembly_conf['megahit']['enable']:
-                assembly_obj.megahit_paired()
-                assembly_result = self.result_dir+'/resequencing/assembly/megahit_out/final.contigs.fa'
-            elif assembly_conf['spades']['enable']:
-                assembly_obj.spades_paired()
-                assembly_result = self.result_dir+'/resequencing/assembly/spades_out/contigs.fasta'
-            elif assembly_conf['velvet']['enable']:
-                assembly_obj.velvet_paired()
-                assembly_result = self.result_dir+'/resequencing/assembly/velvet_output/contigs.fa'
-            else:
-                assembly_obj.megahit_paired()
-                assembly_result = self.result_dir+'/resequencing/assembly/megahit_out/final.contigs.fa'
-            print('end assembly')
-            print("Begin QUAST")
-            subprocess.run('quast '+assembly_result+' --min-contig 50 -o '+self.result_dir+'/resequencing/quast_out', shell=True, check=True)
-            print("End QUAST")
-        blast_input = assembly_result
-        # else:
-        #     scripts.fastq2fasta.fastq2fasta(self.input_file, self.result_dir+"/resequencing")
-        #     blast_input = self.result_dir+"/resequencing/input.fasta"
+            scripts.fastq2fasta.fastq2fasta(self.input_file, self.result_dir+"/resequencing")
+            blast_input = self.result_dir+"/resequencing/input.fasta"
 
-        temp_file = open(os.path.abspath('.') + '/' + self.result_dir+'/Summary_of_results.html', 'a+')
-        temp_file.write('<ul>\n')
-        temp_file.write('<li>assembly result is in %s</li>\n' % './resequencing/assembly')
-        temp_file.write('<li><a href="%s">click to assembly result</a></li>\n' % ('./resequencing/assembly'))
-        temp_file.write('<li>assembly qc result is in %s</li>\n' % './resequencing/quast_out')
-        temp_file.write('<li><a href="%s">click to assembly qc result</a></li>\n' % ('./resequencing/quast_out/report.html'))
-        temp_file.write('</ul>\n')
-        temp_file.close()
-        
-        blastn_conf = self.conf['resequencing']['blastn']
-        
-        # blastn_cline = NcbiblastnCommandline(cmd=os.path.dirname(os.path.realpath(__file__))+'/external_tools/blastn', query=blast_input, db=self.conf["resequencing"]['blastn']["blast_db_path"], outfmt=7, out=self.result_dir+"/resequencing/ncbi_bacteria_blast_out.xml")
-        # blastn_cline.set_parameter('num_threads', int(blastn_conf['num_threads']))
-        # blastn_cline.set_parameter('num_alignments', int(blastn_conf['num_alignments']))
-        # if blastn_conf['evalue'] != None:
-        #     blastn_cline.set_parameter('evalue', float(blastn_conf['evalue']))
-        # # if blastn_conf['task'] != None:
-        # #     blastn_cline.set_parameter('task', blastn_conf['task'])
-        # if blastn_conf['penalty'] != None:
-        #     blastn_cline.set_parameter('penalty', int(blastn_conf['penalty']))
-        # if blastn_conf['reward'] != None:
-        #     blastn_cline.set_parameter('reward', int(blastn_conf['reward']))
-        # print(blastn_cline)
-        # stdout, stderr = blastn_cline()
-        # print(stdout)
-        # print(stderr)
+        if assembly_conf['enable']:
+            blastn_conf = self.conf['resequencing']['blastn']
+            
+            # blastn_cline = NcbiblastnCommandline(cmd=os.path.dirname(os.path.realpath(__file__))+'/external_tools/blastn', query=blast_input, db=self.conf["resequencing"]['blastn']["blast_db_path"], outfmt=7, out=self.result_dir+"/resequencing/ncbi_bacteria_blast_out.xml")
+            # blastn_cline.set_parameter('num_threads', int(blastn_conf['num_threads']))
+            # blastn_cline.set_parameter('num_alignments', int(blastn_conf['num_alignments']))
+            # if blastn_conf['evalue'] != None:
+            #     blastn_cline.set_parameter('evalue', float(blastn_conf['evalue']))
+            # # if blastn_conf['task'] != None:
+            # #     blastn_cline.set_parameter('task', blastn_conf['task'])
+            # if blastn_conf['penalty'] != None:
+            #     blastn_cline.set_parameter('penalty', int(blastn_conf['penalty']))
+            # if blastn_conf['reward'] != None:
+            #     blastn_cline.set_parameter('reward', int(blastn_conf['reward']))
+            # print(blastn_cline)
+            # stdout, stderr = blastn_cline()
+            # print(stdout)
+            # print(stderr)
 
-        blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', assembly_result, blastn_conf["blast_db_path"], blastn_conf['num_threads'], blastn_conf['num_alignments'], blastn_conf['evalue'])
-        if blastn_conf['penalty'] != None:
-            blastn_line += 'penalty %s' % blastn_conf['penalty']
-        if blastn_conf['reward'] != None:
-            blastn_line += 'reward %s' % blastn_conf['reward']
-        try:
-            print('blastn_line = %s' % blastn_line)
-            res = os.popen(blastn_line).read()
-        except Exception as e:
-            print('blastn exception')
-            print(e)
+            blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', assembly_result, blastn_conf["blast_db_path"], blastn_conf['num_threads'], blastn_conf['num_alignments'], blastn_conf['evalue'])
+            if blastn_conf['penalty'] != None:
+                blastn_line += 'penalty %s' % blastn_conf['penalty']
+            if blastn_conf['reward'] != None:
+                blastn_line += 'reward %s' % blastn_conf['reward']
+            try:
+                print('blastn_line = %s' % blastn_line)
+                res = os.popen(blastn_line).read()
+            except Exception as e:
+                print('blastn exception')
+                print(e)
+        else:
+            # 不组装就用blat
+            blastn_conf = self.conf['resequencing']['blastn']
+            blat_line = """blat %s %s %s -out=blast8""" % (blastn_conf["blast_db_path"].replace("bacteria_db", "bacteria_sequences.fasta"), self.input_file, self.result_dir+"/resequencing/blat_out")
+            
+            try:
+                print('blat_line = %s' % blat_line)
+                os.popen(blat_line)
+                res = open(self.result_dir+"/resequencing/blat_out", 'r').read()
+            except Exception as e:
+                print('blat exception')
+                print(e)
 
         # accession_version_list = scripts.handle_blast_xml_result.handle_blast_xml_result_outfmt7(self.result_dir+"/resequencing/ncbi_bacteria_blast_out.xml")
         accession_version_list = scripts.handle_blast_xml_result.handle_blast_xml_result_outfmt7_v2([list(x.split()) for x in res.splitlines()])
@@ -220,56 +233,73 @@ class Resequencing:
         temp_file.write('</ul>\n')
         temp_file.close()
 
-        self.blastn_and_annotation(assembly_result)
+        if assembly_conf['enable']:
+            self.blastn_and_annotation(assembly_result)
+        else:
+            self.blastn_and_annotation(self.input_file)
 
     def run_3gs(self):
 
         print('Begin Resequencing 3gs')
 
         assembly_conf = self.conf['resequencing']['assembly']
-        print('begin assembly')
-        os.mkdir(os.path.abspath('.')+'/'+self.result_dir+'/resequencing/assembly')
-        assembly_obj = assembly.Assembly(self.result_dir+'/resequencing/assembly', assembly_conf, input_file=self.input_file)
-        if assembly_conf['canu']['enable']:
-            assembly_obj.canu()
-            assembly_result = self.result_dir+'/resequencing/assembly/canu_output/canu_assembly_result.contigs.fasta'
-        elif assembly_conf['spades']['enable']:
-            assembly_obj.spades_3gs()
-            assembly_result = self.result_dir+'/resequencing/assembly/spades_out/contigs.fasta'
+        if assembly_conf['enable']:
+            print('begin assembly')
+            os.mkdir(os.path.abspath('.')+'/'+self.result_dir+'/resequencing/assembly')
+            assembly_obj = assembly.Assembly(self.result_dir+'/resequencing/assembly', assembly_conf, input_file=self.input_file)
+            if assembly_conf['canu']['enable']:
+                assembly_obj.canu()
+                assembly_result = self.result_dir+'/resequencing/assembly/canu_output/canu_assembly_result.contigs.fasta'
+            elif assembly_conf['spades']['enable']:
+                assembly_obj.spades_3gs()
+                assembly_result = self.result_dir+'/resequencing/assembly/spades_out/contigs.fasta'
+            else:
+                assembly_obj.canu()
+                assembly_result = self.result_dir+'/resequencing/assembly/canu_output/canu_assembly_result.contigs.fasta'
+            print('end assembly')
+
+        if assembly_conf['enable']:
+            blastn_conf = self.conf['resequencing']['blastn']
+
+            # blastn_cline = NcbiblastnCommandline(cmd=os.path.dirname(os.path.realpath(__file__))+'/external_tools/blastn', query=assembly_result, db=self.conf["resequencing"]['blastn']["blast_db_path"], outfmt=7, out=self.result_dir+"/resequencing/ncbi_bacteria_blast_out.xml")
+            # blastn_cline.set_parameter('num_threads', int(blastn_conf['num_threads']))
+            # blastn_cline.set_parameter('num_alignments', int(blastn_conf['num_alignments']))
+            # if blastn_conf['evalue'] != None:
+            #     blastn_cline.set_parameter('evalue', float(blastn_conf['evalue']))
+            # # if blastn_conf['task'] != None:
+            # #     blastn_cline.set_parameter('task', blastn_conf['task'])
+            # if blastn_conf['penalty'] != None:
+            #     blastn_cline.set_parameter('penalty', int(blastn_conf['penalty']))
+            # if blastn_conf['reward'] != None:
+            #     blastn_cline.set_parameter('reward', int(blastn_conf['reward']))
+            # print(blastn_cline)
+            # stdout, stderr = blastn_cline()
+            # print(stdout)
+            # print(stderr)
+
+            blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', assembly_result, self.conf["resequencing"]['blastn']["blast_db_path"], blastn_conf['num_threads'], blastn_conf['num_alignments'], blastn_conf['evalue'])
+            if blastn_conf['penalty'] != None:
+                blastn_line += 'penalty %s' % blastn_conf['penalty']
+            if blastn_conf['reward'] != None:
+                blastn_line += 'reward %s' % blastn_conf['reward']
+            try:
+                print('blastn_line = %s' % blastn_line)
+                res = os.popen(blastn_line).read()
+            except Exception as e:
+                print('blastn exception')
+                print(e)
         else:
-            assembly_obj.canu()
-            assembly_result = self.result_dir+'/resequencing/assembly/canu_output/canu_assembly_result.contigs.fasta'
-        print('end assembly')
-
-        blastn_conf = self.conf['resequencing']['blastn']
-
-        # blastn_cline = NcbiblastnCommandline(cmd=os.path.dirname(os.path.realpath(__file__))+'/external_tools/blastn', query=assembly_result, db=self.conf["resequencing"]['blastn']["blast_db_path"], outfmt=7, out=self.result_dir+"/resequencing/ncbi_bacteria_blast_out.xml")
-        # blastn_cline.set_parameter('num_threads', int(blastn_conf['num_threads']))
-        # blastn_cline.set_parameter('num_alignments', int(blastn_conf['num_alignments']))
-        # if blastn_conf['evalue'] != None:
-        #     blastn_cline.set_parameter('evalue', float(blastn_conf['evalue']))
-        # # if blastn_conf['task'] != None:
-        # #     blastn_cline.set_parameter('task', blastn_conf['task'])
-        # if blastn_conf['penalty'] != None:
-        #     blastn_cline.set_parameter('penalty', int(blastn_conf['penalty']))
-        # if blastn_conf['reward'] != None:
-        #     blastn_cline.set_parameter('reward', int(blastn_conf['reward']))
-        # print(blastn_cline)
-        # stdout, stderr = blastn_cline()
-        # print(stdout)
-        # print(stderr)
-
-        blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', assembly_result, self.conf["resequencing"]['blastn']["blast_db_path"], blastn_conf['num_threads'], blastn_conf['num_alignments'], blastn_conf['evalue'])
-        if blastn_conf['penalty'] != None:
-            blastn_line += 'penalty %s' % blastn_conf['penalty']
-        if blastn_conf['reward'] != None:
-            blastn_line += 'reward %s' % blastn_conf['reward']
-        try:
-            print('blastn_line = %s' % blastn_line)
-            res = os.popen(blastn_line).read()
-        except Exception as e:
-            print('blastn exception')
-            print(e)
+            # 不组装就用blat
+            blastn_conf = self.conf['resequencing']['blastn']
+            blat_line = """blat %s %s %s -out=blast8""" % (blastn_conf["blast_db_path"].replace("bacteria_db", "bacteria_sequences.fasta"), self.input_file, self.result_dir+"/resequencing/blat_out")
+            
+            try:
+                print('blat_line = %s' % blat_line)
+                os.popen(blat_line)
+                res = open(self.result_dir+"/resequencing/blat_out", 'r').read()
+            except Exception as e:
+                print('blat exception')
+                print(e)
 
         # accession_version_list = scripts.handle_blast_xml_result.handle_blast_xml_result_outfmt7(self.result_dir+"/resequencing/ncbi_bacteria_blast_out.xml")
         accession_version_list = scripts.handle_blast_xml_result.handle_blast_xml_result_outfmt7_v2([list(x.split()) for x in res.splitlines()])
@@ -377,7 +407,10 @@ class Resequencing:
             command_line += "-u "+str(minimap2_conf['-u'])+' '
         if minimap2_conf['-x'] != None:
             command_line += "-x "+str(minimap2_conf['-x'])+' '
-        command_line += self.result_dir+"/resequencing/%s.fasta "+self.input_file+" > "+self.result_dir+"/resequencing/minimap2_%s_result.sam"
+        if assembly_conf['enable']:
+            command_line += self.result_dir+"/resequencing/%s.fasta "+assembly_result+" > "+self.result_dir+"/resequencing/minimap2_%s_result.sam"
+        else:
+            command_line += self.result_dir+"/resequencing/%s.fasta "+self.input_file+" > "+self.result_dir+"/resequencing/minimap2_%s_result.sam"
 
 
         # closest_accession_version = accession_version_list[0]
@@ -429,7 +462,10 @@ class Resequencing:
         temp_file.write('</ul>\n')
         temp_file.close()
         
-        self.blastn_and_annotation(assembly_result)
+        if assembly_conf['enable']:
+            self.blastn_and_annotation(assembly_result)
+        else:
+            self.blastn_and_annotation(self.input_file)
 
     def blastn_and_annotation(self, assembly_result):
         # blast patric_amr_db
