@@ -8,7 +8,7 @@ class Downloader:
 
 
     def download_assembly_summary(self):
-        subprocess.run('wget -c -T 10 -t 0 ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt', shell=True, check=True)
+        subprocess.run('wget -c -T 10 -t 0 https://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt', shell=True, check=True)
 
 
     def download_fna(self):
@@ -22,6 +22,7 @@ class Downloader:
             if assembly_summary_line.strip().split('\t')[11] != 'Complete Genome': continue
             ftp_path = assembly_summary_line.strip().split('\t')[19]
             fna_ftp_path = ftp_path + '/' + ftp_path.split('/')[-1] + '_genomic.fna.gz'
+            fna_ftp_path.replace("ftp://", "https://")
             try:
                 subprocess.run('wget -c -T 10 --tries=0 --retry-connrefused %s' % fna_ftp_path, shell=True, check=True)
             except:
