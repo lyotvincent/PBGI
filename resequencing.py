@@ -5,7 +5,7 @@ import time
 
 import assembly
 import calculating_genome_similarity
-import scripts.fasta2fastq
+# import scripts.fasta2fastq
 import scripts.fastq2fasta
 import scripts.handle_blast_xml_result
 import scripts.handle_denovo_blast_result
@@ -177,19 +177,23 @@ class Resequencing:
         temp_file.close()
 
         alignment_tool = 'bowtie2' if self.conf['resequencing']['alignment_tool']['bowtie2'] != None else "snap"
-        if alignment_tool == 'bowtie2':
+        if assembly_conf['enable']:
             subprocess.run('bowtie2-build '+self.result_dir+'/resequencing/'+closest_accession_version+'.fasta '+self.result_dir+'/resequencing/'+closest_accession_version+'_bowtie2_index', shell=True, check=True)
         else:
-            subprocess.run('snap-aligner index '+self.result_dir+'/resequencing/'+closest_accession_version+'.fasta '+self.result_dir+'/resequencing/'+closest_accession_version+'_index', shell=True, check=True)
+            if alignment_tool == 'bowtie2':
+                subprocess.run('bowtie2-build '+self.result_dir+'/resequencing/'+closest_accession_version+'.fasta '+self.result_dir+'/resequencing/'+closest_accession_version+'_bowtie2_index', shell=True, check=True)
+            else:
+                subprocess.run('snap-aligner index '+self.result_dir+'/resequencing/'+closest_accession_version+'.fasta '+self.result_dir+'/resequencing/'+closest_accession_version+'_index', shell=True, check=True)
+        
         if self.input_file_paired == None:
             assembly_conf = self.conf['resequencing']['assembly']
             if assembly_conf['enable']:
-                if alignment_tool == 'bowtie2':
-                    subprocess.run('bowtie2 -x '+self.result_dir+'/resequencing/'+closest_accession_version+'_bowtie2_index -f -U '+assembly_result+' -S '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
-                else:
-                    scripts.fasta2fastq.fasta_to_fastq(assembly_result, self.result_dir)
-                    assembly_result = self.result_dir+"/resequencing/assembly_result.fastq"
-                    subprocess.run('snap-aligner single '+self.result_dir+'/resequencing/'+closest_accession_version+'_index '+assembly_result+' -o '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
+                # if alignment_tool == 'bowtie2':
+                subprocess.run('bowtie2 -x '+self.result_dir+'/resequencing/'+closest_accession_version+'_bowtie2_index -f -U '+assembly_result+' -S '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
+                # else:
+                #     scripts.fasta2fastq.fasta_to_fastq(assembly_result, self.result_dir)
+                #     assembly_result = self.result_dir+"/resequencing/assembly_result.fastq"
+                #     subprocess.run('snap-aligner single '+self.result_dir+'/resequencing/'+closest_accession_version+'_index '+assembly_result+' -o '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
             else:
                 if alignment_tool == 'bowtie2':
                     subprocess.run('bowtie2 -x '+self.result_dir+'/resequencing/'+closest_accession_version+'_bowtie2_index -U '+self.input_file+' -S '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
@@ -199,12 +203,12 @@ class Resequencing:
         else:
             assembly_conf = self.conf['resequencing']['assembly']
             if assembly_conf['enable']:
-                if alignment_tool == 'bowtie2':
-                    subprocess.run('bowtie2 -x '+self.result_dir+'/resequencing/'+closest_accession_version+'_bowtie2_index -f -U '+assembly_result+' -S '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
-                else:
-                    scripts.fasta2fastq.fasta_to_fastq(assembly_result, self.result_dir)
-                    assembly_result = self.result_dir+"/resequencing/assembly_result.fastq"
-                    subprocess.run('snap-aligner single '+self.result_dir+'/resequencing/'+closest_accession_version+'_index '+assembly_result+' -o '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
+                # if alignment_tool == 'bowtie2':
+                subprocess.run('bowtie2 -x '+self.result_dir+'/resequencing/'+closest_accession_version+'_bowtie2_index -f -U '+assembly_result+' -S '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
+                # else:
+                #     scripts.fasta2fastq.fasta_to_fastq(assembly_result, self.result_dir)
+                #     assembly_result = self.result_dir+"/resequencing/assembly_result.fastq"
+                #     subprocess.run('snap-aligner single '+self.result_dir+'/resequencing/'+closest_accession_version+'_index '+assembly_result+' -o '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)
             else:
                 if alignment_tool == 'bowtie2':
                     subprocess.run('bowtie2 -x '+self.result_dir+'/resequencing/'+closest_accession_version+'_bowtie2_index -1 '+self.input_file+' -2 '+self.input_file_paired+' -S '+self.result_dir+'/resequencing/alignment_result.sam', shell=True, check=True)

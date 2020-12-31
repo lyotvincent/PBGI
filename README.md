@@ -9,8 +9,23 @@ PBGI is an effective approach and automatic bioinformatics pipeline for bacteria
 1.```git clone https://github.com/lyotvincent/PBGI.git```  
 2.run ```python download_bacteria_data``` to build bacteria local database.  
 3.Install external tools  
-```conda install -y fastqc fastp trimmomatic cutadapt megahit spades velvet quast blast prokka prodigal snap-aligner bowtie2 samtools minimap2 biopython bcbio-gff xlrd pyyaml```  
-```pip install datasketch```  
+>```conda install -y fastqc```  
+```conda install -y fastp```  
+```conda install -y trimmomatic```  
+```conda install -y cutadapt```  
+```conda install -y megahit```  
+```conda install -y spades```  
+```conda install -y velvet```  
+```conda install -y quast```  
+```conda install -y blast```  
+```conda install -y blat```  
+```conda install -y prokka```  
+```conda install -y prodigal```  
+```conda install -y snap-aligner```  
+```conda install -y bowtie2```  
+```conda install -y samtools```  
+```conda install -y minimap2```  
+```pip install biopython bcbio-gff bioconvert xlrd pyyaml datasketch```
 
 ### From conda
 
