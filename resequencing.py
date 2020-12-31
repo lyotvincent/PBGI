@@ -111,7 +111,7 @@ class Resequencing:
             # print(stdout)
             # print(stderr)
 
-            blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', assembly_result, blastn_conf["blast_db_path"], blastn_conf['num_threads'], blastn_conf['num_alignments'], blastn_conf['evalue'])
+            blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', blast_input, blastn_conf["blast_db_path"], blastn_conf['num_threads'], blastn_conf['num_alignments'], blastn_conf['evalue'])
             if blastn_conf['penalty'] != None:
                 blastn_line += 'penalty %s' % blastn_conf['penalty']
             if blastn_conf['reward'] != None:
@@ -125,7 +125,7 @@ class Resequencing:
         else:
             # 不组装就用blat
             blastn_conf = self.conf['resequencing']['blastn']
-            blat_line = """blat %s %s %s -out=blast8""" % (blastn_conf["blast_db_path"].replace("bacteria_db", "bacteria_sequences.fasta"), self.input_file, self.result_dir+"/resequencing/blat_out")
+            blat_line = """blat %s %s %s -out=blast8""" % (blastn_conf["blast_db_path"].replace("bacteria_db", "bacteria_sequences.fasta"), blast_input, self.result_dir+"/resequencing/blat_out")
             
             try:
                 print('blat_line = %s' % blat_line)
