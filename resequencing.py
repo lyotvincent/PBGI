@@ -129,7 +129,7 @@ class Resequencing:
             
             try:
                 print('blat_line = %s' % blat_line)
-                os.popen(blat_line)
+                subprocess.run(blat_line, shell=True, check=True)
                 res = open(self.result_dir+"/resequencing/blat_out", 'r').read()
             except Exception as e:
                 print('blat exception')
@@ -299,7 +299,7 @@ class Resequencing:
             
             try:
                 print('blat_line = %s' % blat_line)
-                os.popen(blat_line)
+                subprocess.run(blat_line, shell=True, check=True)
                 res = open(self.result_dir+"/resequencing/blat_out", 'r').read()
             except Exception as e:
                 print('blat exception')
