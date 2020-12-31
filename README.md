@@ -25,7 +25,7 @@ PBGI is an effective approach and automatic bioinformatics pipeline for bacteria
 ```conda install -y bowtie2```  
 ```conda install -y samtools```  
 ```conda install -y minimap2```  
-```pip install biopython bcbio-gff bioconvert xlrd pyyaml datasketch```
+```pip install biopython bcbio-gff xlrd pyyaml datasketch```
 
 ### From conda
 
