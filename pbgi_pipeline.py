@@ -31,6 +31,10 @@ def main():
     # with open(os.path.dirname(os.path.realpath(__file__))+'conf.yaml', encoding='UTF-8') as yaml_file:
     #     conf = yaml.safe_load(yaml_file)
 
+    if "-V" in argv or "-v" in argv or "-version" in argv or "--version" in argv:
+        print("PBGI version: 0.1")
+        exit(0)
+
 
     if len(argv) == 1 or "-h" in argv or "-help" in argv or "--h" in argv or "--help" in argv:
         print_help()
