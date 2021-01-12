@@ -1,8 +1,10 @@
-"""
-author: sun jialiang
-environment: python3.6
-how to run: 
-"""
+#!/usr/bin/env python
+
+# """
+# author: sun jialiang
+# environment: python3.6
+# how to run: 
+# """
 
 import os
 import sys
