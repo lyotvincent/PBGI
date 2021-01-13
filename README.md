@@ -6,30 +6,17 @@ PBGI is an effective approach and automatic bioinformatics pipeline for bacteria
 
 ### From github
 
-1.```git clone https://github.com/lyotvincent/PBGI.git```  
-2.run ```python download_bacteria_data``` to build bacteria local database.  
-3.Install external tools  
->```conda install -y fastqc```  
-```conda install -y fastp```  
-```conda install -y trimmomatic```  
-```conda install -y cutadapt```  
-```conda install -y megahit```  
-```conda install -y spades```  
-```conda install -y velvet```  
-```conda install -y quast```  
-```conda install -y blast```  
-```conda install -y blat```  
-```conda install -y prokka```  
-```conda install -y prodigal```  
-```conda install -y snap-aligner```  
-```conda install -y bowtie2```  
-```conda install -y samtools```  
-```conda install -y minimap2```  
-```pip install biopython bcbio-gff xlrd pyyaml datasketch```
+1. Download program first: ```git clone https://github.com/lyotvincent/PBGI.git```  
+2. Install external tools:  
+2.1. Install miniconda from *https://docs.conda.io/en/latest/miniconda.html* or anaconda from *https://www.anaconda.com/products/individual*  
+2.2. Create python3.7 environment (because QUAST depends on python3.7) ```conda create -n env_name python=3.7```   
+2.3. Install external tools by running a shell script ```sh install_dependencies.sh```  
+3. Build bacteria database: create a folder to save bacteria data ```mkdir /path/to/bacteria/data``` && then run ```python download_bacteria_data.py``` to build bacteria local database.  
 
-### From conda
+### From bioconda
 
-We are working for this.  (```conda install pbgi_pipeline -c bioconda```)
+We are working for this.  
+<!-- (```conda install pbgi_pipeline -c bioconda```) -->
 
 ## External tools
 These software/tools respectively support part of the entire pipeline. If you want to use all the functions of the pipeline, all these software in the table should be installed.
@@ -46,18 +33,18 @@ The ✔ in 'conda' column means that the software cound install by conda.
 |velvet|✔|<https://github.com/dzerbino/velvet>|
 |QUAST|✔|<https://github.com/ablab/quast>|
 |BLAST|✔|<https://blast.ncbi.nlm.nih.gov/Blast.cgi>|
+|BLAT|✔|<http://genome.ucsc.edu/goldenPath/help/hgTracksHelp.html#BLATAlign>|
 |prokka|✔|<https://github.com/tseemann/prokka>|
 |prodigal|✔|<https://github.com/hyattpd/Prodigal>|
 |snap-aligner|✔|<https://github.com/amplab/snap>|
 |bowtie2|✔|<https://github.com/BenLangmead/bowtie2>|
 |samtools|✔|<https://github.com/samtools/samtools>|
 |minimap2|✔|<https://github.com/lh3/minimap2>|
-|biopython|✔|pip
-|bcbio-gff|✔|pip
-|xlrd|✔|pip
-|pyyaml|✔|pip
-
-```pip install datasketch``` need to be installed by the user.  
+|biopython|✔|pip|
+|bcbio-gff|✔|pip|
+|xlrd|✔|pip|
+|pyyaml|✔|pip|
+|datasketch|×|pip|
 
 ## Databases
 Bacterial data can be downloaded from the database below.  
