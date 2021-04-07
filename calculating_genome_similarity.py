@@ -1,5 +1,6 @@
 from datasketch import MinHash
 import glob
+import heapq
 
 class GenomeSimilarityCalculator:
 
@@ -56,6 +57,7 @@ class GenomeSimilarityCalculator:
 
         max_jaccard = 0
         closest_genome = ''
+        ref_heap = []
 
         contigs_minhash = self._construct_contigs_minhash()
 
@@ -67,11 +69,18 @@ class GenomeSimilarityCalculator:
             temp_jaccard = contigs_minhash.jaccard(refseq_minhash)
             print(accession_version+' jaccard = '+str(temp_jaccard))
 
-            if temp_jaccard > max_jaccard:
-                closest_genome = accession_version
-                max_jaccard = temp_jaccard
+            heapq.heappush(ref_heap, [0-temp_jaccard, accession_version])
+
+        max_jaccard = 0 - ref_heap[0][0]
+        closest_genome = ref_heap[0][1]
+
+        return closest_genome, max_jaccard, ref_heap
+
+        #     if temp_jaccard > max_jaccard:
+        #         closest_genome = accession_version
+        #         max_jaccard = temp_jaccard
         
-        return closest_genome, max_jaccard
+        # return closest_genome, max_jaccard
 
 # data1 = ['minhash', 'is', 'a', 'probabilistic', 'data', 'structure', 'for', 'estimating', 'the', 'similarity', 'between', 'datasets']
 # data2 = ['minhash', 'is', 'a', 'probability', 'data', 'structure', 'for', 'estimating', 'the', 'similarity', 'between', 'documents']

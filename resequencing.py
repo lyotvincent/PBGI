@@ -2,6 +2,7 @@ from Bio.Blast.Applications import NcbiblastnCommandline
 import subprocess
 import os
 import time
+import heapq
 
 import assembly
 import calculating_genome_similarity
@@ -167,12 +168,17 @@ class Resequencing:
             scripts.download_nucleotide.download_by_accession_version(self.result_dir, accession_version)
 
         genome_similarity_calculator = calculating_genome_similarity.GenomeSimilarityCalculator(self.result_dir, blast_input, accession_version_list)
-        closest_accession_version, max_jaccard = genome_similarity_calculator.search_similar_genome_from_bacteria_dataset()
+        closest_accession_version, max_jaccard, ref_heap = genome_similarity_calculator.search_similar_genome_from_bacteria_dataset()
         print("closest_accession_version = %s, max_jaccard = %s" % (closest_accession_version, max_jaccard))
 
         temp_file = open(os.path.abspath('.') + '/' + self.result_dir+'/Summary_of_results.html', 'a+')
         temp_file.write('<ul>\n')
         temp_file.write('<li>closest accession version is %s in %s Jaccard similarity coefficient</li>\n' % (closest_accession_version, max_jaccard))
+        temp_file.write('<li>top-10 accession versions(accession version; jaccard similarity coefficient):</li>\n')
+        for i in range(10):
+            temp = heapq.heappop(ref_heap)
+            temp_jaccard, temp_accession_version = 0-temp[0], temp[1]
+            temp_file.write('<li>%s; %s</li>\n' % (temp_accession_version, temp_jaccard))
         temp_file.write('</ul>\n')
         temp_file.close()
 
@@ -355,12 +361,17 @@ class Resequencing:
         temp_file.close()
 
         genome_similarity_calculator = calculating_genome_similarity.GenomeSimilarityCalculator(self.result_dir, assembly_result, accession_version_list)
-        closest_accession_version, max_jaccard = genome_similarity_calculator.search_similar_genome_from_bacteria_dataset()
+        closest_accession_version, max_jaccard, ref_heap = genome_similarity_calculator.search_similar_genome_from_bacteria_dataset()
         print("closest_accession_version = %s, max_jaccard = %s" % (closest_accession_version, max_jaccard))
 
         temp_file = open(os.path.abspath('.') + '/' + self.result_dir+'/Summary_of_results.html', 'a+')
         temp_file.write('<ul>\n')
         temp_file.write('<li>closest genome (accession version) is %s in %s Jaccard similarity coefficient</li>\n' % (closest_accession_version, max_jaccard))
+        temp_file.write('<li>top-10 accession versions(accession version; jaccard similarity coefficient):</li>\n')
+        for i in range(10):
+            temp = heapq.heappop(ref_heap)
+            temp_jaccard, temp_accession_version = 0-temp[0], temp[1]
+            temp_file.write('<li>%s; %s</li>\n' % (temp_accession_version, temp_jaccard))
         temp_file.write('</ul>\n')
         temp_file.close()
 
