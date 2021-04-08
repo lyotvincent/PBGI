@@ -81,9 +81,9 @@ class ConfigurationReader:
         if preprocessing_sheet.cell_value(21, 3) != "":
             self.conf["preprocessing"]["fastp"]["--poly_x_min_len"] = preprocessing_sheet.cell_value(21, 3)
         if preprocessing_sheet.cell_value(22, 3) != "":
-            self.conf["preprocessing"]["fastp"]["--cut_by_quality5"] = preprocessing_sheet.cell_value(22, 3)
+            self.conf["preprocessing"]["fastp"]["--cut_front"] = preprocessing_sheet.cell_value(22, 3)
         if preprocessing_sheet.cell_value(23, 3) != "":
-            self.conf["preprocessing"]["fastp"]["--cut_by_quality3"] = preprocessing_sheet.cell_value(23, 3)
+            self.conf["preprocessing"]["fastp"]["--cut_tail"] = preprocessing_sheet.cell_value(23, 3)
         if preprocessing_sheet.cell_value(24, 3) != "":
             self.conf["preprocessing"]["fastp"]["-r"] = preprocessing_sheet.cell_value(24, 3)
         if preprocessing_sheet.cell_value(25, 3) != "":
@@ -433,6 +433,11 @@ class ConfigurationReader:
             self.conf["resequencing"]["minimap2"]["-u"] = resequencing_sheet.cell_value(25, 9)
         if resequencing_sheet.cell_value(26, 9) != "":
             self.conf["resequencing"]["minimap2"]["-x"] = resequencing_sheet.cell_value(26, 9)
+        
+        if resequencing_sheet.cell_value(54, 1) != "":
+            self.conf["resequencing"]["alignment_tool"]["bowtie2"] = resequencing_sheet.cell_value(54, 1)
+        if resequencing_sheet.cell_value(55, 1) != "":
+            self.conf["resequencing"]["alignment_tool"]["snap"] = resequencing_sheet.cell_value(55, 1)
         
         if resequencing_sheet.cell_value(37, 1) != "":
             self.conf["resequencing"]["blastn"]["blast_db_path"] = resequencing_sheet.cell_value(37, 1)
