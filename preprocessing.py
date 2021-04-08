@@ -27,15 +27,15 @@ class Preprocessing:
         if fastqc_conf['--nogroup'] != None:
             com += "--nogroup "
         if fastqc_conf['-t'] != None:
-            com += "-t "+fastqc_conf['-t']+' '
+            com += "-t "+str(fastqc_conf['-t'])+' '
         if fastqc_conf['-c'] != None:
-            com += "-c "+fastqc_conf['-c']+' '
+            com += "-c "+str(fastqc_conf['-c'])+' '
         if fastqc_conf['-a'] != None:
-            com += "-a "+fastqc_conf['-a']+' '
+            com += "-a "+str(fastqc_conf['-a'])+' '
         if fastqc_conf['-l'] != None:
-            com += "-l "+fastqc_conf['-l']+' '
+            com += "-l "+str(fastqc_conf['-l'])+' '
         if fastqc_conf['-k'] != None:
-            com += "-k "+str(fastqc_conf['-t'])+' '
+            com += "-k "+str(fastqc_conf['-k'])+' '
         com += self.input_file
         try:
             subprocess.run(com, shell=True, check=True)
@@ -56,15 +56,15 @@ class Preprocessing:
         if fastqc_conf['--nogroup'] != None:
             com += "--nogroup "
         if fastqc_conf['-t'] != None:
-            com += "-t "+fastqc_conf['-t']+' '
+            com += "-t "+str(fastqc_conf['-t'])+' '
         if fastqc_conf['-c'] != None:
-            com += "-c "+fastqc_conf['-c']+' '
+            com += "-c "+str(fastqc_conf['-c'])+' '
         if fastqc_conf['-a'] != None:
-            com += "-a "+fastqc_conf['-a']+' '
+            com += "-a "+str(fastqc_conf['-a'])+' '
         if fastqc_conf['-l'] != None:
-            com += "-l "+fastqc_conf['-l']+' '
+            com += "-l "+str(fastqc_conf['-l'])+' '
         if fastqc_conf['-k'] != None:
-            com += "-k "+str(fastqc_conf['-t'])+' '
+            com += "-k "+str(fastqc_conf['-k'])+' '
         com += self.input_file_1+" "+self.input_file_2
         try:
             subprocess.run(com, shell=True, check=True)
