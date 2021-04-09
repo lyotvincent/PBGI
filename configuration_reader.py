@@ -170,9 +170,9 @@ class ConfigurationReader:
         if preprocessing_sheet.cell_value(10, 5) != "":
             self.conf["preprocessing"]["trimmomatic"]["TRAILING"] = preprocessing_sheet.cell_value(10, 5)
         if preprocessing_sheet.cell_value(11, 5) != "":
-            self.conf["preprocessing"]["trimmomatic"]["SLIDINGWINDOW"] = preprocessing_sheet.cell_value(11, 5)
-        if preprocessing_sheet.cell_value(11, 5) != "":
-            self.conf["preprocessing"]["trimmomatic"]["MINLEN"] = preprocessing_sheet.cell_value(11, 5)
+            self.conf["preprocessing"]["trimmomatic"]["SLIDINGWINDOW"] = str(preprocessing_sheet.cell_value(11, 5))
+        if preprocessing_sheet.cell_value(12, 5) != "":
+            self.conf["preprocessing"]["trimmomatic"]["MINLEN"] = preprocessing_sheet.cell_value(12, 5)
         
         if preprocessing_sheet.cell_value(3, 7) != True:
             self.conf["preprocessing"]["cutadapt"]["enable"] = False

@@ -112,11 +112,11 @@ class Resequencing:
             # print(stdout)
             # print(stderr)
 
-            blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', blast_input, blastn_conf["blast_db_path"], blastn_conf['num_threads'], blastn_conf['num_alignments'], blastn_conf['evalue'])
+            blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s """ % ('blastn', blast_input, blastn_conf["blast_db_path"], int(blastn_conf['num_threads']), int(blastn_conf['num_alignments']), blastn_conf['evalue'])
             if blastn_conf['penalty'] != None:
-                blastn_line += 'penalty %s' % blastn_conf['penalty']
+                blastn_line += '-penalty %s ' % int(blastn_conf['penalty'])
             if blastn_conf['reward'] != None:
-                blastn_line += 'reward %s' % blastn_conf['reward']
+                blastn_line += '-reward %s ' % int(blastn_conf['reward'])
             try:
                 print('blastn_line = %s' % blastn_line)
                 res = os.popen(blastn_line).read()
@@ -287,11 +287,11 @@ class Resequencing:
             # print(stdout)
             # print(stderr)
 
-            blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', assembly_result, self.conf["resequencing"]['blastn']["blast_db_path"], blastn_conf['num_threads'], blastn_conf['num_alignments'], blastn_conf['evalue'])
+            blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s """ % ('blastn', assembly_result, blastn_conf["blast_db_path"], int(blastn_conf['num_threads']), int(blastn_conf['num_alignments']), blastn_conf['evalue'])
             if blastn_conf['penalty'] != None:
-                blastn_line += 'penalty %s' % blastn_conf['penalty']
+                blastn_line += '-penalty %s ' % int(blastn_conf['penalty'])
             if blastn_conf['reward'] != None:
-                blastn_line += 'reward %s' % blastn_conf['reward']
+                blastn_line += '-reward %s ' % int(blastn_conf['reward'])
             try:
                 print('blastn_line = %s' % blastn_line)
                 res = os.popen(blastn_line).read()
@@ -488,11 +488,11 @@ class Resequencing:
             print('begin blast patric_amr_db')
             patric_blastn_conf = self.conf['resequencing']['patric_blastn']
 
-            blastn_line = """%s -query %s -db %s -outfmt 5 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', assembly_result, patric_blastn_conf["blast_db_path"], patric_blastn_conf['num_threads'], patric_blastn_conf['num_alignments'], patric_blastn_conf['evalue'])
+            blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s """ % ('blastn', assembly_result, patric_blastn_conf["blast_db_path"], int(patric_blastn_conf['num_threads']), int(patric_blastn_conf['num_alignments']), patric_blastn_conf['evalue'])
             if patric_blastn_conf['penalty'] != None:
-                blastn_line += 'penalty %s' % patric_blastn_conf['penalty']
+                blastn_line += '-penalty %s ' % int(patric_blastn_conf['penalty'])
             if patric_blastn_conf['reward'] != None:
-                blastn_line += 'reward %s' % patric_blastn_conf['reward']
+                blastn_line += '-reward %s ' % int(patric_blastn_conf['reward'])
             try:
                 print('blastn_line = %s' % blastn_line)
                 res = os.popen(blastn_line).read()
@@ -516,11 +516,11 @@ class Resequencing:
             print('begin card_blastn')
             card_blastn_conf = self.conf['resequencing']['card_blastn']
 
-            blastn_line = """%s -query %s -db %s -outfmt 5 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', assembly_result, card_blastn_conf["blast_db_path"], card_blastn_conf['num_threads'], card_blastn_conf['num_alignments'], card_blastn_conf['evalue'])
+            blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s """ % ('blastn', assembly_result, card_blastn_conf["blast_db_path"], int(card_blastn_conf['num_threads']), int(card_blastn_conf['num_alignments']), card_blastn_conf['evalue'])
             if card_blastn_conf['penalty'] != None:
-                blastn_line += 'penalty %s' % card_blastn_conf['penalty']
+                blastn_line += '-penalty %s ' % int(card_blastn_conf['penalty'])
             if card_blastn_conf['reward'] != None:
-                blastn_line += 'reward %s' % card_blastn_conf['reward']
+                blastn_line += '-reward %s ' % int(card_blastn_conf['reward'])
             try:
                 print('blastn_line = %s' % blastn_line)
                 res = os.popen(blastn_line).read()
@@ -544,11 +544,11 @@ class Resequencing:
             print('begin drugbank_db')
             drugbank_blastn_conf = self.conf['resequencing']['card_blastn']
 
-            blastn_line = """%s -query %s -db %s -outfmt 5 -num_threads %s -num_alignments %s -evalue %s""" % ('blastn', assembly_result, drugbank_blastn_conf["blast_db_path"], drugbank_blastn_conf['num_threads'], drugbank_blastn_conf['num_alignments'], drugbank_blastn_conf['evalue'])
-            if drugbank_blastn_conf['penalty'] != None:
-                blastn_line += 'penalty %s' % drugbank_blastn_conf['penalty']
-            if drugbank_blastn_conf['reward'] != None:
-                blastn_line += 'reward %s' % drugbank_blastn_conf['reward']
+            blastn_line = """%s -query %s -db %s -outfmt 7 -num_threads %s -num_alignments %s -evalue %s """ % ('blastn', assembly_result, card_blastn_conf["blast_db_path"], int(card_blastn_conf['num_threads']), int(card_blastn_conf['num_alignments']), card_blastn_conf['evalue'])
+            if card_blastn_conf['penalty'] != None:
+                blastn_line += '-penalty %s ' % int(card_blastn_conf['penalty'])
+            if card_blastn_conf['reward'] != None:
+                blastn_line += '-reward %s ' % int(card_blastn_conf['reward'])
             try:
                 print('blastn_line = %s' % blastn_line)
                 res = os.popen(blastn_line).read()
