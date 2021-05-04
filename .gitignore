@@ -5,3 +5,4 @@ meta.yaml
 scripts/snap.py
 images/*
 pbgi_pipeline*.tar.gz
+.vscode
